@@ -55,39 +55,59 @@ bool display(bool arr[][n]) {
 	return flag;
 }
 
-int main() {
-
-	bool bubbleWrap[n][n];
-	initialization(bubbleWrap);
-
+//функция лопанья пузырьков
+void pop_bubble(bool arr[][n]) {
 	//инициализируем координаты начала и конца региона
 	int xBegin = 0;
 	int yBegin = 0;
 	int xEnd = 0;
 	int yEnd = 0;
 
-	//главный цикл выполняется апока есть нелопнутые пузырьки
-	while (display(bubbleWrap)) {
-		std::cout << "Enter the coordinates of the beginning and end of the region separated by a space: ";
-		std::cin >> xBegin >> yBegin >> xEnd >> yEnd;
+	std::cout << "Enter the coordinates of the beginning and end of the region separated by a space: ";
+	std::cin >> xBegin >> yBegin >> xEnd >> yEnd;
 
-		while (true)
+	while (true)
+	{
+		//если введены не числа сбрасываем и очищаем cin
+		std::cin.clear();
+		while (std::cin.get() != '\n');
+		//проверяем правильность координат
+		if ((xBegin < 1 || xBegin > n) || (yBegin < 1 || yBegin > n) || (xEnd < 1 || xEnd > n) || (yEnd < 1 || yEnd > n)) {
+			std::cout << "Input error! The coordinates should be from 1 to " << n << ".Try again : ";
+			std::cin >> xBegin >> yBegin >> xEnd >> yEnd;
+		}
+		//если координаты корректны выходим из цикла
+		else
 		{
-			//если введены не числа сбрасываем и очищаем cin
-			std::cin.clear();
-			while (std::cin.get() != '\n');
-			//проверяем правильность координат
-			if ((xBegin < 1 || xBegin > n) || (yBegin < 1 || yBegin > n) || (xEnd < 1 || xEnd > n) || (yEnd < 1 || yEnd > n)) {
-				std::cout << "Input error! The coordinates should be from 1 to " << n << ".Try again : ";
-				std::cin >> xBegin >> yBegin >> xEnd >> yEnd;
-			}
-			//если координаты корректны выходим из цикла
-			else
-			{
-				break;
+			break;
+		}
+	}
+	//уменьшаем все координаты на 1
+	xBegin--;
+	yBegin--;
+	xEnd--;
+	yEnd--;
+	system("cls");
+
+	for (int i = yBegin; i <= yEnd; ++i) {
+		for (int j = xBegin; j <= xEnd; ++j) {
+			if (arr[i][j]) {
+				arr[i][j] = false;
+				std::cout << "Pop! ";
 			}
 		}
 	}
+	std::cout << std::endl;
+	return;
+}
 
+int main() {
 
+	bool bubbleWrap[n][n];
+	initialization(bubbleWrap);
+	
+	//главный цикл выполняется апока есть нелопнутые пузырьки
+	while (display(bubbleWrap)) {
+		pop_bubble(bubbleWrap);
+	}
 }
